@@ -1,0 +1,9 @@
+app:
+    name: Names
+    vendor: Vendor
+    codename: Codename
+    author: Author
+    author_email: Author email
+    version: Version
+    broken_list: Broken list
+    features: Features

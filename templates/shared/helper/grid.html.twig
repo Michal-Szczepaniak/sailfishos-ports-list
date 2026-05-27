@@ -1,0 +1,53 @@
+{% macro render(grid) %}
+
+    {% set definition = grid.definition %}
+    {% set sorting = grid.parameters.get('sorting') %}
+    <table class="table table-dark">
+        <thead>
+        <tr class="text-uppercase text-success">
+            {% for field in definition.fields %}
+                {% if field.enabled %}
+                    <th class="sylius-table-column-{{ field.name }} {{ field.options.vars.th_class|default('') }}" scope="col">
+                        {% if sorting[field.sortable] is defined and sorting[field.sortable] == "asc" %}
+                            {% set sort = 'desc' %}
+                        {% else %}
+                            {% set sort = 'asc' %}
+                        {% endif %}
+
+                        <a href="?sorting[{{ field.sortable }}]={{ sort }}" class="d-block text-decoration-none text-reset w-100 h-100">
+                            {{ field.label|trans }} {% if field.sortable %}{{ sort == 'asc' ? '▲' : '▼' }}{% endif %}
+                        </a>
+                    </th>
+                {% endif %}
+            {% endfor %}
+            {% if definition.actionGroups.item is defined and definition.getEnabledActions('item')|length > 0 %}
+                <th class="sylius-table-column-actions">Actions</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for resource in grid.data %}
+            <tr>
+                {% for field in definition.enabledFields %}
+                    <td class="align-middle" data-test-{{ field.name }}>{{ sylius_grid_render_field(grid, field, resource) }}</td>
+                {% endfor %}
+                {% if definition.actionGroups.item is defined and definition.getEnabledActions('item')|length > 0 %}
+                    <td>
+                        {% for action in definition.getEnabledActions('item') %}
+                            {{ sylius_grid_render_action(grid, action, resource) }}
+                        {% endfor %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <br />
+
+    {% set paginator = grid.data %}
+
+    {% if paginator.haveToPaginate() %}
+        {{ pagerfanta(paginator, 'twig', options|default({'template': '@BabDevPagerfanta/default.html.twig'})) }}
+    {% endif %}
+{% endmacro %}

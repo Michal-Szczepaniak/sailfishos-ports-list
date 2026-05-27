@@ -1,0 +1,15 @@
+parameters:
+    locale: 'en'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+
+    App\Api\ObsApi:
+        arguments:
+            - '@Symfony\Component\Serializer\SerializerInterface'
+            - '%env(APP_OBS_BASIC_AUTH)%'

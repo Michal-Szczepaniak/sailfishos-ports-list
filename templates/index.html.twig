@@ -1,0 +1,25 @@
+{% import '/shared/helper/grid.html.twig' as grid %}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="h-100">
+        <div class="container pt-4 text-center">
+            <div class="col-12">
+                <h1>Unofficial SailfishOS Ports - List</h1>
+            </div>
+            <div class="col-12">
+                <h5>To add info about your device, add .portslistinfo file to your droid-configs repo. <a
+                            href="https://github.com/VerdandiTeam/droid-config-pipa/blob/master/.portslistinfo">Example</a></h5>
+            </div>
+        </div>
+        <div class="container pt-4">
+            <div class="col-12">
+                <div class="card shadow-2-strong">
+                    <div class="card-body p-0">
+                        {{ grid.render(devices) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

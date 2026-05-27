@@ -1,0 +1,4 @@
+App\Api\DTO\ServicesDTO:
+    attributes:
+        services:
+            serialized_name: 'service'

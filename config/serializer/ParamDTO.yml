@@ -1,0 +1,6 @@
+App\Api\DTO\ParamDTO:
+    attributes:
+        name:
+            serialized_name: '@name'
+        value:
+            serialized_name: '#'

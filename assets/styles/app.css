@@ -1,0 +1,62 @@
+html,
+body,
+.intro {
+    height: 100%;
+}
+:root,
+[data-bs-theme="dark"] {
+    --bs-body-bg: rgb(22,22,22);
+}
+
+table td,
+table th {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.card {
+    border-radius: .5rem;
+    --bs-card-bg: #212529;
+}
+
+.table-scroll {
+    border-radius: .5rem;
+}
+
+thead {
+    top: 0;
+    position: sticky;
+}
+.pagination {
+    margin: 10px;
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding-left: 0;
+}
+
+.pagination__item {
+    display: inline-flex;
+    padding: 6px 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.pagination__item--current-page {
+    background: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+
+.pagination__item--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.pagination__item--previous-page,
+.pagination__item--next-page {
+    font-weight: 500;
+}

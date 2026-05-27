@@ -1,0 +1,4 @@
+App\Api\DTO\EntryDTO:
+    attributes:
+        name:
+            serialized_name: '@name'
