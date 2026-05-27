@@ -1,5 +1,1 @@
-<ul class="mb-0">
-{% for element in data %}
-    <li>{{ element }}</li>
-{% endfor %}
-</ul>
+{{ data|join(' · ') }}
