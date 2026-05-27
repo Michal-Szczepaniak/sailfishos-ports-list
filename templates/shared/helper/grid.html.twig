@@ -14,8 +14,14 @@
                             {% set sort = 'asc' %}
                         {% endif %}
 
-                        <a href="?sorting[{{ field.sortable }}]={{ sort }}" class="d-block text-decoration-none text-reset w-100 h-100">
-                            {{ field.label|trans }} {% if field.sortable %}{{ sort == 'asc' ? '▲' : '▼' }}{% endif %}
+                        <a
+                            {% if field.sortable and field.sortable != '' %}
+                                href="?sorting[{{ field.sortable }}]={{ sort }}"
+                            {% else %}
+                                href="#"
+                            {% endif%}
+                            class="d-block text-decoration-none text-reset w-100 h-100">
+                            {{ field.label|trans }} {% if field.sortable and field.sortable != '' %}{{ sort == 'asc' ? '▲' : '▼' }}{% endif %}
                         </a>
                     </th>
                 {% endif %}
