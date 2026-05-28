@@ -23,6 +23,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ScrapeObsCommand extends Command
 {
+    private const string HALIUM_PREFIX = 'halium';
+
     public function __construct(
         private readonly ObsApi $api,
         private readonly GitMetadataProvider $metadataProvider,
@@ -77,20 +79,29 @@ class ScrapeObsCommand extends Command
         $projectName = substr($entry->getName(), strlen(ObsApi::NEMO_TESTING_PROJECT) + 1);
         $nameParts = explode(':', $projectName);
 
-        if (count($nameParts) !== 2) return null;
+        if (count($nameParts) < 2) return null;
         [$vendor, $device] = $nameParts;
 
+        if ($vendor === self::HALIUM_PREFIX) return null;
+
+        if (str_starts_with($device, self::HALIUM_PREFIX)) {
+            $device = substr($device, strlen(self::HALIUM_PREFIX) + 1);
+        }
+
         $versions = $this->api->getProjects($entry->getName())->getEntries();
+        array_walk($versions, function (EntryDTO $entry) {
+            preg_match('/(?<!\d\.)(?:\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}|\d{1,2}\.\d{1,2})(?!\.\d)/', $entry->getName(), $match);
+            $entry->setName($match[0] ?? '');
+        });
         $versions = array_filter($versions, fn (EntryDTO $entry) =>
-            str_starts_with($entry->getName(), ObsApi::REPO_NAME_PREFIX) &&
-            ctype_digit(implode('', explode('.', substr($entry->getName(), strlen(ObsApi::REPO_NAME_PREFIX)))))
+            ctype_digit(implode('', explode('.', $entry->getName())))
         );
         if ([] === $versions) return null;
 
         usort($versions, $this->sortVersions(...));
         $version = $versions[0];
 
-        return new DeviceDTO($device, $vendor, substr($version->getName(), strlen(ObsApi::REPO_NAME_PREFIX)));
+        return new DeviceDTO($device, $vendor, $version->getName());
     }
 
     private function sortVersions(EntryDTO $a, EntryDTO $b): int
@@ -99,8 +110,8 @@ class ScrapeObsCommand extends Command
             return 0;
         }
 
-        $aParts = explode('.', substr($a->getName(), strlen('sailfishos_')));
-        $bParts = explode('.', substr($b->getName(), strlen('sailfishos_')));
+        $aParts = explode('.', $a->getName());
+        $bParts = explode('.', $b->getName());
         if (count($aParts) < count($bParts)) {
             return -1;
         } else if (count($aParts) > count($bParts)) {
