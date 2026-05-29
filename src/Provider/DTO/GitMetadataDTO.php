@@ -6,34 +6,36 @@ namespace App\Provider\DTO;
 
 final class GitMetadataDTO
 {
-    private ?string $author = null;
+    private ?array $authors = null;
 
-    private ?string $authorEmail = null;
+    private ?array $authorEmails = null;
 
     private ?string $device = null;
+
+    private ?string $url = null;
 
     private array $broken = [];
 
     private array $features = [];
 
-    public function getAuthor(): ?string
+    public function getAuthors(): ?array
     {
-        return $this->author;
+        return $this->authors;
     }
 
-    public function setAuthor(?string $author): void
+    public function setAuthors(?array $authors): void
     {
-        $this->author = $author;
+        $this->authors = $authors;
     }
 
-    public function getAuthorEmail(): ?string
+    public function getAuthorEmails(): ?array
     {
-        return $this->authorEmail;
+        return $this->authorEmails;
     }
 
-    public function setAuthorEmail(?string $authorEmail): void
+    public function setAuthorEmails(?array $authorEmails): void
     {
-        $this->authorEmail = $authorEmail;
+        $this->authorEmails = $authorEmails;
     }
 
     public function getDevice(): ?string
@@ -44,6 +46,16 @@ final class GitMetadataDTO
     public function setDevice(?string $device): void
     {
         $this->device = $device;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): void
+    {
+        $this->url = $url;
     }
 
     public function getBroken(): array

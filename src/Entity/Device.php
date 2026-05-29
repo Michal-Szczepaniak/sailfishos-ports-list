@@ -35,14 +35,17 @@ class Device implements ResourceInterface
     #[ORM\Column(length: 255)]
     private ?string $vendor = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $author = null;
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
+    private ?array $authors = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $author_email = null;
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
+    private ?array $author_emails = null;
 
     #[ORM\Column(length: 255)]
     private ?string $version = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $url = null;
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private ?array $broken_list = null;
@@ -94,26 +97,26 @@ class Device implements ResourceInterface
         return $this;
     }
 
-    public function getAuthor(): ?string
+    public function getAuthors(): ?array
     {
-        return $this->author;
+        return $this->authors;
     }
 
-    public function setAuthor(string $author): static
+    public function setAuthors(array $authors): static
     {
-        $this->author = $author;
+        $this->authors = $authors;
 
         return $this;
     }
 
-    public function getAuthorEmail(): ?string
+    public function getAuthorEmails(): ?array
     {
-        return $this->author_email;
+        return $this->author_emails;
     }
 
-    public function setAuthorEmail(string $author_email): static
+    public function setAuthorEmails(array $author_emails): static
     {
-        $this->author_email = $author_email;
+        $this->author_emails = $author_emails;
 
         return $this;
     }
@@ -128,6 +131,16 @@ class Device implements ResourceInterface
         $this->version = $version;
 
         return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): void
+    {
+        $this->url = $url;
     }
 
     public function getBrokenList(): ?array

@@ -7,3 +7,4 @@ app:
     version: Version
     broken_list: Broken list
     features: Features
+    url: Url

@@ -36,14 +36,17 @@ final class DeviceGrid extends AbstractGrid
                 StringField::create('codename')
                     ->setLabel('app.codename')
                     ->setSortable(true),
-                StringField::create('author')
+                TwigField::create('authors', '/list_field.html.twig')
                     ->setLabel('app.author')
                     ->setSortable(true),
-                StringField::create('author_email')
+                TwigField::create('author_emails', '/list_field.html.twig')
                     ->setLabel('app.author_email')
                     ->setSortable(true),
                 StringField::create('version')
                     ->setLabel('app.version')
+                    ->setSortable(true),
+                TwigField::create('url', '/url_field.html.twig')
+                    ->setLabel('app.url')
                     ->setSortable(true),
                 TwigField::create('broken_list', '/list_field.html.twig')
                     ->setLabel('app.broken_list'),

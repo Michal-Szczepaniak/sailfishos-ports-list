@@ -58,10 +58,11 @@ class ScrapeObsCommand extends Command
                 $metadata = $this->metadataProvider->provide($deviceDTO);
 
                 if ($metadata !== null) {
-                    $device->setAuthor($metadata->getAuthor() ?? '');
-                    $device->setAuthorEmail($metadata->getAuthorEmail() ?? '');
+                    $device->setAuthors($metadata->getAuthors() ?? []);
+                    $device->setAuthorEmails($metadata->getAuthorEmails() ?? []);
                     $device->setBrokenList($metadata->getBroken());
                     $device->setFeatures($metadata->getFeatures());
+                    $device->setUrl($metadata->getUrl());
                     $device->setName($metadata->getDevice() ?? $device->getCodename());
                 }
             }

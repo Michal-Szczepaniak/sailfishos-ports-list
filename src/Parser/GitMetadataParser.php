@@ -18,6 +18,8 @@ final class GitMetadataParser
 
     private const string DEVICE_KEY = 'DEVICE';
 
+    private const string URL_KEY = 'URL';
+
     public function parse(string $content): ?GitMetadataDTO
     {
         if ($content === '') return null;
@@ -38,6 +40,7 @@ final class GitMetadataParser
             [$key, $value] = explode('=', $line, 2);
             $key = preg_replace('/[^a-z0-9]/i', '', trim($key));
             $value = trim($value);
+            $rawValue = $value;
 
             $values = array_map(
                 fn (string $val) => preg_replace('/[^a-z0-9.,\s_-]/i', '', trim($val)),
@@ -47,11 +50,12 @@ final class GitMetadataParser
             $value = preg_replace('/[^a-z0-9@.,\s_-]/i', '', $value);
 
             match (strtoupper($key)) {
-                self::AUTHOR_KEY => $metadata->setAuthor($value),
-                self::AUTHOR_EMAIL_KEY => $metadata->setAuthorEmail($value),
+                self::AUTHOR_KEY => $metadata->setAuthors($values),
+                self::AUTHOR_EMAIL_KEY => $metadata->setAuthorEmails($values),
                 self::BROKEN_KEY => $metadata->setBroken($values),
                 self::FEATURES_KEY => $metadata->setFeatures($values),
                 self::DEVICE_KEY => $metadata->setDevice($value),
+                self::URL_KEY => filter_var($rawValue, FILTER_VALIDATE_URL) ? $metadata->setUrl($rawValue) : '',
             };
         }
 
