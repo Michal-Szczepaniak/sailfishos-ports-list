@@ -102,7 +102,7 @@ class ScrapeObsCommand extends Command
         usort($versions, $this->sortVersions(...));
         $version = $versions[0];
 
-        return new DeviceDTO($device, $vendor, $version->getName());
+        return new DeviceDTO($device, $vendor, $version->getName(), $projectName);
     }
 
     private function sortVersions(EntryDTO $a, EntryDTO $b): int

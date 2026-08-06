@@ -27,31 +27,41 @@ readonly final class GitMetadataProvider
 
     public function provide(DeviceDTO $device): ?GitMetadataDTO
     {
-        $services = $this->obsApi->getServiceFile($device);
+        $packages = $this->obsApi->getPackages($device);
 
-        $url = null;
-        $branch = null;
-        foreach ($services->getServices() as $service) {
-            if ($service->getName() !== self::TAR_GIT_SERVICE) continue;
+        foreach ($packages->getEntries() as $entry) {
+            if (!str_starts_with($entry->getName(), 'droid-config')) continue;
 
-            foreach ($service->getParams() as $param) {
-                match ($param->getName()) {
-                    self::URL_PARAM => $url = $param->getValue(),
-                    self::BRANCH_PARAM => $branch = $param->getValue(),
-                    default => null,
-                };
+            $droidConfigPackage = ObsApi::DROID_CONFIG_PREFIX . substr($entry->getName(), 13);
+
+            $services = $this->obsApi->getServiceFile($device, $droidConfigPackage);
+
+            $url = null;
+            $branch = null;
+            foreach ($services->getServices() as $service) {
+                if ($service->getName() !== self::TAR_GIT_SERVICE) continue;
+
+                foreach ($service->getParams() as $param) {
+                    match ($param->getName()) {
+                        self::URL_PARAM => $url = $param->getValue(),
+                        self::BRANCH_PARAM => $branch = $param->getValue(),
+                        default => null,
+                    };
+                }
+            }
+
+            if ($url === null || $branch === null) return null;
+
+            $metadataFile = $this->gitApi->getMetadataFile($url, $branch);
+            try {
+                return $this->metadataParser->parse($metadataFile);
+            } catch (\Exception $e) {
+                echo $e->getMessage();
+
+                return null;
             }
         }
 
-        if ($url === null || $branch === null) return null;
-
-        $metadataFile = $this->gitApi->getMetadataFile($url, $branch);
-        try {
-            return $this->metadataParser->parse($metadataFile);
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-
-            return null;
-        }
+        return null;
     }
 }
