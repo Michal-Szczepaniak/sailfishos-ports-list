@@ -20,9 +20,7 @@ class DeviceRepository extends ServiceEntityRepository
     public function findByDeviceDTO(DeviceDTO $device): ?Device
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.vendor = :vendor')
             ->andWhere('o.codename = :name')
-            ->setParameter('vendor', $device->getVendor())
             ->setParameter('name', $device->getName())
             ->getQuery()
             ->getOneOrNullResult()

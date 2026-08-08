@@ -7,12 +7,16 @@ namespace App\Provider;
 use App\Cli\DTO\DeviceDTO;
 use App\Entity\Device;
 use App\Factory\DeviceFactory;
+use App\Parser\DevicesListParser;
+use App\Parser\DTO\ListDeviceDTO;
 use App\Repository\DeviceRepository;
 
 readonly final class DeviceProvider
 {
-    public function __construct(private DeviceFactory $factory, private DeviceRepository $repository)
-    {}
+    public function __construct(
+        private DeviceFactory $factory,
+        private DeviceRepository $repository,
+    ) {}
 
     public function provide(DeviceDTO $deviceDTO): Device
     {
@@ -20,6 +24,8 @@ readonly final class DeviceProvider
         if ($device === null) {
             $device = $this->factory->createFromDeviceDTO($deviceDTO);
         }
+
+        $device->setVendor(ucwords($device->getVendor()));
 
         return $device;
     }

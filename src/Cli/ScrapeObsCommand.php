@@ -49,9 +49,6 @@ class ScrapeObsCommand extends Command
 
 
             $device = $this->deviceProvider->provide($deviceDTO);
-            $device->setName($deviceDTO->getName());
-            $device->setCodename($deviceDTO->getName());
-            $device->setVendor($deviceDTO->getVendor());
             $device->setVersion($deviceDTO->getVersion());
 
             if (!$device->isBlacklisted()) {
@@ -64,6 +61,7 @@ class ScrapeObsCommand extends Command
                     $device->setFeatures($metadata->getFeatures());
                     $device->setUrl($metadata->getUrl());
                     $device->setName($metadata->getDevice() ?? $device->getCodename());
+                    $device->setVendor($metadata->getVendor() ?? $device->getVendor());
                 }
             }
 

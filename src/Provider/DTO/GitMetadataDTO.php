@@ -12,6 +12,8 @@ final class GitMetadataDTO
 
     private ?string $device = null;
 
+    private ?string $vendor = null;
+
     private ?string $url = null;
 
     private array $broken = [];
@@ -46,6 +48,16 @@ final class GitMetadataDTO
     public function setDevice(?string $device): void
     {
         $this->device = $device;
+    }
+
+    public function getVendor(): ?string
+    {
+        return $this->vendor;
+    }
+
+    public function setVendor(?string $vendor): void
+    {
+        $this->vendor = $vendor;
     }
 
     public function getUrl(): ?string

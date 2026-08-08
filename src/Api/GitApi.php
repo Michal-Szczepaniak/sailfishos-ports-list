@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class GitApi
 {
-    public function getMetadataFile(string $url, string $branch): string
+    public function getFile(string $url, string $branch, string $file): string
     {
         $curl = curl_init();
 
@@ -18,7 +18,7 @@ final class GitApi
         $url = substr($url, 0, -4);
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => sprintf("%s/raw/%s/.portslistinfo", $url, $branch),
+            CURLOPT_URL => sprintf("%s/raw/%s/%s", $url, $branch, $file),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,

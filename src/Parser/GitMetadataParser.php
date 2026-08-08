@@ -20,12 +20,35 @@ final class GitMetadataParser
 
     private const string URL_KEY = 'URL';
 
-    public function parse(string $content): ?GitMetadataDTO
+    public function parse(string $metadataFile, string $specFile): ?GitMetadataDTO
     {
-        if ($content === '') return null;
+        $metadata = null;
 
-        $metadata = new GitMetadataDTO();
-        $lines = preg_split('/\R/', $content);
+        if ($specFile !== '') {
+            $metadata ??= new GitMetadataDTO();
+            $this->parseSpec($metadata, $specFile);
+        }
+
+        if ($metadataFile !== '') {
+            $metadata ??= new GitMetadataDTO();
+            $this->parseMetadata($metadata, $metadataFile);
+        }
+
+        return $metadata;
+    }
+
+    private function parseSpec(GitMetadataDTO &$metadata, string $specFile): void
+    {
+        preg_match('/^%define\s+vendor_pretty\s+(.+)$/m', $specFile, $vendor);
+        preg_match('/^%define\s+device_pretty\s+(.+)$/m', $specFile, $device);
+
+        $metadata->setDevice($device[1] ?? null);
+        $metadata->setVendor($vendor[1] ?? null);
+    }
+
+    private function parseMetadata(GitMetadataDTO &$metadata, string $metadataFile): void
+    {
+        $lines = preg_split('/\R/', $metadataFile);
         foreach ($lines as $line) {
             $line = trim($line);
 
@@ -58,7 +81,6 @@ final class GitMetadataParser
                 self::URL_KEY => filter_var($rawValue, FILTER_VALIDATE_URL) ? $metadata->setUrl($rawValue) : '',
             };
         }
-
-        return $metadata;
     }
+
 }
