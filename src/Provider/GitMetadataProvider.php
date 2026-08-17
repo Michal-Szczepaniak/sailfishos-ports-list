@@ -52,6 +52,10 @@ readonly final class GitMetadataProvider
 
             if ($url === null || $branch === null) return null;
 
+            if (!str_ends_with($url, '.git')) {
+                $url .= '.git';
+            }
+
             $projectName = basename(parse_url($url, PHP_URL_PATH), '.git');
             $specFile = $this->gitApi->getFile($url, $branch, sprintf('rpm/%s.spec', $projectName));
             $metadataFile = $this->gitApi->getFile($url, $branch, '.portslistinfo');
