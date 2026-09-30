@@ -25,7 +25,7 @@ final class DeviceGrid extends AbstractGrid
     public function __invoke(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
-            ->setLimits([15])
+            ->setLimits([150])
             ->withFields(
                 StringField::create('name')
                     ->setLabel('app.name')
