@@ -66,7 +66,7 @@ final class GitMetadataParser
             $rawValue = $value;
 
             $values = array_map(
-                fn (string $val) => preg_replace('/[^a-z0-9.,\s_-]/i', '', trim($val)),
+                fn (string $val) => preg_replace('/[^a-z0-9.,@\s_-]/i', '', trim($val)),
                 explode(',', $value, 5)
             );
             $values = array_values(array_filter($values, fn($v) => $v !== ''));
