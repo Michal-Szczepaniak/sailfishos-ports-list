@@ -1,62 +1,154 @@
-html,
-body,
-.intro {
-    height: 100%;
-}
-:root,
-[data-bs-theme="dark"] {
-    --bs-body-bg: rgb(22,22,22);
+:root {
+  --background-bottom: #140f21;
+  --background-middle: #291d47;
+  --background-top: #583b9e;
+    
+  --primary: #FFFFFF;
+  --secondary: rgba(235, 235, 255, 0.72);
+  --glow: rgba(138, 143, 255, 0.35);
+  --faintglow: rgba(138, 143, 255, 0.12);
+  --highlight: #8a8fff;
+  
+  --background-glass: rgba(38, 28, 64, 0.65);
+  --glass-edge: rgba(255, 255, 255, 0.15);
+  
+  --background-header: #5052B5;
 }
 
-table td,
-table th {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+body {
+  color: var(--primary);
+  background: radial-gradient(circle at 50% 0%, var(--background-top), var(--background-middle), var(--background-bottom)) fixed;
+}
+
+h1 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+h5 {
+  color: var(--secondary);
+  font-size: 0.95rem;
+}
+
+h5 a {
+  color: var(--highlight);
+}
+
+h5 a:hover {
+  position: relative;
+  top: -1px;
+  left: -1px;
+  color: var(--primary);
 }
 
 .card {
-    border-radius: .5rem;
-    --bs-card-bg: #212529;
+  background: var(--background-glass);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  margin-bottom: 2.5rem;
 }
 
-.table-scroll {
-    border-radius: .5rem;
+.card-body {
+  background: transparent;
 }
 
-thead {
-    top: 0;
-    position: sticky;
-}
-.pagination {
-    margin: 10px;
-    display: flex;
-    gap: 10px;
-    list-style: none;
-    padding-left: 0;
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--primary);
+  --bs-table-hover-bg: var(--glow);
+  --bs-table-hover-color: var(--primary);
+  border-color: rgba(255, 255, 255, 0.08);
+  margin-bottom: 0;
+  font-size: 0.9rem;
 }
 
-.pagination__item {
-    display: inline-flex;
-    padding: 6px 10px;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    text-decoration: none;
-    color: inherit;
+.table thead {
+  background: var(--background-middle);
+  border-bottom: 1px solid var(--glass-edge);
+  position: relative;
+  z-index: 20;
 }
 
-.pagination__item--current-page {
-    background: #0d6efd;
-    color: white;
-    border-color: #0d6efd;
+.table thead tr,
+.table thead tr.text-success {
+  color: var(--highlight) !important;
 }
 
-.pagination__item--disabled {
-    opacity: 0.5;
-    pointer-events: none;
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--background-header);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+  clip-path: inset(0 0 -15px 0);
+  white-space: nowrap !important;
+  vertical-align: middle;
 }
 
-.pagination__item--previous-page,
-.pagination__item--next-page {
-    font-weight: 500;
+.table thead th a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap !important;
+  text-decoration: none;
+}
+
+.table th {
+  font-weight: 300;
+  padding: 1.1rem 0.75rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.8px;
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--faintglow);
+}
+
+.table td {
+  padding: 0.95rem 0.75rem;
+  font-weight: 400;
+  border: none;
+}
+
+.table td a {
+  color: var(--primary);
+  text-decoration: none;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--faintglow);
+  border: 1px solid var(--glass-edge);
+  font-size: 0.8rem;
+  display: inline-block;
+}
+
+.table td a:hover {
+  position: relative;
+  top: -1px;
+  left: -1px;
+  background: var(--glow);
+  box-shadow: 0 0 12px var(--glow);
+}
+
+.table-responsive {
+  max-height: 80vh;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+@media (min-width: 1200px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 90vw;
+  }
+}
+
+.table td[data-test-name] {
+  font-weight: 500;
+}
+
+.table td[data-test-codename] {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+  color: var(--highlight);
 }
